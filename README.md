@@ -265,61 +265,6 @@ These are the main parameters that we use to calculate factors such as propogati
 **Transition time**= time(slew_high_rise_thr) - time(slew_low_rise_thr)
 </details>
 
-<details>
-<summary>DAY3</summary>
-  
-# Labs for CMOS inverter ngspice simulations
-**I/O placer revision**
-
-# Inception of Layout and CMOS Fabrication Process
-* Substrate Selection: In the initial phase, the appropriate semiconductor substrate is chosen.
-Create an active region for transistors: to isolate the active regions for transistors SiO2 and Si3N2 deposited. Pockets were created using photoresist and lithography.
-* N-well & P-well formation: P-well formation involves photolithography and ion implantation of p-type Boron material into the p-substrate. N-well is formed similarly with n-type Phosphorus material. Drive in diffusion by placing it in a high-temperature furnace.
-Gate Formation.A polysilicon layer is deposited and photolithography techniques are applied to create NMOS and PMOS gates
-* Lightly Doped Drain (LDD) formation: LDD is done to avoid the hot electron effect and short channel effect.
-* Source & Drain Formation: Thin oxide layers are added to avoid channel effects during ion implantation.N+ and P+ implants are performed using Arsenic implantation and high-temperature annealing.
-* Local Interconnect Formation: Thin screen oxide is removed through etching in HF solution. Titanium deposition through sputtering is initiated. Heat treatment results in chemical reactions, producing low-resistant titanium silicon dioxide for interconnect contacts and titanium nitride for top-level connections, enabling local communication.
-* Higher Level Metal Formation: To achieve suitable metal interconnects, non-planar surface topography is addressed. Chemical Mechanical Polishing (CMP) is utilized by doping silicon oxide with Boron or Phosphorus to achieve surface planarization. TiN and blanket Tungsten layers are deposited and subjected to CMP. An aluminum (Al) layer is added and subjected to photolithography and CMP
-* Dielectric Layer Addition: Finally, a dielectric layer, typically Si3N4, is applied to safeguard the chip.
-
-![268612347-fd86cf56-7141-4c17-be50-b809f71e76b8](https://github.com/apoorvaaaa5/pes_physicaldesign/assets/117642634/0fc47853-af01-47d0-b3bc-422228190bd0)
 
 
-# LAB
-Clone the following github repo using the command
-`git clone https://github.com/nickson-jose/vsdstdcelldesign.git`
 
-Now we need to copy the 'sky130A.tech' file into the directory we just cloned
-`cp sky130A.tech /home/vsduser/Desktop/work/tools/openlane_working_dir/openlane/vsdstdcelldesign`
-
-![268612890-5ed58903-816f-48db-b31b-49b935ba6bea](https://github.com/apoorvaaaa5/pes_physicaldesign/assets/117642634/686b4564-a4b4-483b-9276-6d1a65296254)
-
-
-Then type the following command:
-` magic -T sky130A.tech sky130_inv.mag &`
-![268613244-80170082-ba02-4acc-9e4b-b35823932dfd](https://github.com/apoorvaaaa5/pes_physicaldesign/assets/117642634/a9daa900-661c-4b32-85e4-24a759430eba)
-
-
-We can get to know the details of the inverter by hovering the mouse cursor over it and pressing 's' on the keyboard. Then we can type what in the tkcon.
-
-Pressing 's' three times will show what parts are connected to the selected part.
-![268613505-aba69f2c-8a2d-482f-81e1-038cbffd6a4e](https://github.com/apoorvaaaa5/pes_physicaldesign/assets/117642634/9ac3cb2b-fb9b-4b72-8fd3-3d16a3028af0)
-
-
-**Steps to Create Standard Cell Layout and Extract Spice Netlist**
-
-We can view the DRC error:
-
-![268613750-9be1fcfa-d24f-477f-9481-db8cc22d3e2b](https://github.com/apoorvaaaa5/pes_physicaldesign/assets/117642634/1cddde50-fa65-4564-a400-5e22fcb666b4)
-
-
-To extract Spice Netlist we perform the following steps in the tkcon window:
-* `pwd`
-* `extract all`
-* `ext2spice cthresh 0 rthresh 0`
-* `ext2spice`
-
-![268614188-2bd7f09f-0741-45f0-bda3-667149c8a700](https://github.com/apoorvaaaa5/pes_physicaldesign/assets/117642634/382f139a-c20d-409d-8af9-321a4c6e5269)
-
-
-Now the files sky130_inv.ext and sky130_inv.spice are in 'vsdstdcelldesign' directory
