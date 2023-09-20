@@ -450,7 +450,7 @@ Track info can be found at :
 
 ``` ~/Desktop/work/tools/openlane_working_dir/pdks/sky130A/libs.tech/openlane/sky130fd_sc_hd/tracks.info```
 
-<img width="297" alt="Screenshot 2023-09-19 162329" src="https://github.com/apoorvaaaa5/pes_physicaldesign/assets/117642634/71316298-3e80-4390-9291-5c682e24f2f0">
+
 
 
 
