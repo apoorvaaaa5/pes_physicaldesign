@@ -529,7 +529,6 @@ Pre-layout timing analysis and importance of good clock tree</summary>
   > add_lefs -src $lefs
   ![268837885-809552f7-dbef-4b6b-a865-786a5f21e835](https://github.com/apoorvaaaa5/pes_physicaldesign/assets/117642634/93793b8f-3932-43d7-820c-28b580ae76a9)
 
-![268838230-b2d14e91-7f8e-4990-8a82-e87745b506be](https://github.com/apoorvaaaa5/pes_physicaldesign/assets/117642634/aa94f993-e3c1-4f21-b735-b65ecb089be7)
 
 
 ## Delay tables
