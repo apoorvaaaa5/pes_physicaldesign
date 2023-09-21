@@ -547,6 +547,7 @@ Pre-layout timing analysis and importance of good clock tree</summary>
 ![268839149-87abec98-59b4-47d7-83f4-fe89b52db872](https://github.com/apoorvaaaa5/pes_physicaldesign/assets/117642634/7ab7cb66-7035-48d9-9fe8-c403ff627ca2)
 
 sky_Vsdinv
+
 <img width="141" alt="Screenshot 2023-09-21 122324" src="https://github.com/apoorvaaaa5/pes_physicaldesign/assets/117642634/f43f9b78-045d-4d76-bd9e-2a1bf07099f6">
 
 ## Introduction to clock jitter and uncertainty
@@ -566,23 +567,88 @@ In the openlane window type
 
 </details><details>
 <summary>Day 5 - Final steps for RTL2GDS using tritonRoute and openSTA
-  </summary>summary>
-  Power Distribution Network and Routing
-  > gen_pdn
+## Routing and DRC
+<details>
+<summary> Maze routing </summary>
+
++ Maze routing is a method used in electronic design automation (EDA) and integrated circuit (IC) design to determine efficient paths for interconnecting various components, such as logic gates, on a chip's layout. The goal is to find a path through a maze-like grid of obstacles while optimizing for factors like wire length, signal delay, and area utilization.
+
++ Lee's algorithm, also known as Lee's breadth-first search (BFS) algorithm, is a graph traversal and pathfinding algorithm that is commonly used in maze routing, maze solving, and other grid-based problems. Named after its creator, C. Y. Lee, the algorithm is particularly useful for finding the shortest path between two points in a grid while exploring the grid layer by layer.
+
+</details>
+
+<details>
+<summary> DRC </summary>
+  
+Lambda rules are process-specific design rules used in semiconductor manufacturing to ensure that integrated circuit (IC) layouts adhere to the capabilities and constraints of a particular semiconductor process. These rules are expressed in terms of lambda (λ), a normalized unit of measurement relative to the process technology. Lambda rules can vary between semiconductor foundries and process nodes, but they typically cover various aspects of IC design. Here's a list of common lambda rules and design considerations:
+
++ Minimum Feature Size: Specifies the minimum allowed width and spacing for features such as transistors, metal tracks, and vias, often expressed as multiples of λ.
++ Aspect Ratio: Defines the acceptable aspect ratio (width-to-height ratio) for rectangular structures, ensuring manufacturability.
++ Metal Layer Constraints: Specifies minimum metal track widths, metal-to-metal spacings, and via sizes on metal layers.
++ Poly Pitch: Defines the minimum pitch (spacing between features) for the poly-silicon (poly) layer, which affects the size of transistors and gates.
++ Active Area Constraints: Specifies minimum active area dimensions, ensuring that transistors meet process requirements.
++ Well and Substrate Taps: Covers the placement and size of well and substrate taps for connecting to power and ground planes.
++ Gate Length: Specifies the minimum gate length for transistors, affecting their performance characteristics.
++ Contact and Via Rules: Defines the minimum size and spacing of contacts and vias used to connect different layers in the IC.
++ Local Interconnects: Provides rules for local interconnects, which are used for routing within a cell or macro.
++ Minimum Metal to Active Spacing: Sets the minimum separation between metal tracks and active areas.
++ Minimum Metal to Contact Spacing: Specifies the minimum distance between metal tracks and contacts.
++ Edge Exclusion Zones: Defines exclusion zones near the chip's edge, where certain design elements are not allowed.
++ Density Rules: Enforces limits on the density of features in different regions of the chip to ensure proper manufacturing and avoid over-congestion.
++ Well Proximity Rules: Governs the proximity of different well types (e.g., n-well and p-well) to prevent undesirable interactions.
++ Metal Layer Ordering: Specifies the order in which metal layers should be used in the design hierarchy.
++ Metal Filling: Addresses requirements for metal fill patterns to ensure planarity and manufacturability.
++ Antenna Rules: Addresses the issue of charge buildup (antenna effect) during manufacturing, providing guidelines for mitigating this effect.
++ Variation-Aware Rules: Accounts for process variations, statistical timing, and other variations in critical design rules.
++ Electromigration Constraints: Specifies limits on current densities to prevent electromigration issues in metal tracks.
++ Supply Voltage Constraints: Sets design guidelines for supply voltage levels and power distribution.
+  
+</details>
+
+## Power Distribution Network and Routing
+
+<details>
+<summary> Power Distribution Network </summary>
+
++ After generating our clock tree network and verifying post routing STA checks we are ready to generate the power distribution network `gen_pdn` in OpenLANE:
+
+![268687350-7dde0890-0e24-4b1d-ac2b-153324d32d5d](https://github.com/apoorvaaaa5/pes_physicaldesign/assets/117642634/7c03c6de-69c7-432f-ad10-7c62303e8f3a)
+
++ The PDN feature within OpenLANE will create:
+   - Power ring global to the entire core
+   - Power halo local to any preplaced cells
+   - Power straps to bring power into the center of the chip
+   - Power rails for the standard cells
++ We see that there is a change in the DEF.
+
+![268687392-c39633c9-f35a-4333-b5ed-7db6e771bd70](https://github.com/apoorvaaaa5/pes_physicaldesign/assets/117642634/1e636c63-29fc-4446-bb58-cc8b655cfe6f)
 
 
-  > run_routing
+</details>
 
-  ## SPEF Extraction
-  SPEF is extracted after routing in Place and route stage. This helps in the accurate calculation of IR-drop analysis and other analysis after routing. This file contains the R and C parameters 
-  depending on the placement of a tile/block and the routing among the placed cells.
-  > cd Desktop/work/tools/SPEF_Extractor
-  >python3 /home/vsduser/Desktop/work/tools/openlane_working_dir/openlane/designs/picorv32a/runs/16-09_19- 
- 58/tmp/merged/home/vsduser/Desktop/work/tools/openlane_working_dir/openlane/designs/picorv32a/runs/18-09_19-58/results/routing/picorv32a.def
-  > Spef extracted is created, path is given below
- > /home/vsduser/Desktop/work/tools/openlane_working_dir/openlane/designs/picorv32a/runs/18-09_06-26/results/r
+<details>
+<summary> Global and Detailed Routing </summary>
+
++ OpenLANE uses TritonRoute as the routing engine for physical implementations of designs. Routing consists of two stages:
+   - Global Routing - Routing guides are generated for interconnects on our netlist defining what layers, and where on the chip each of the nets will be reputed.
+   - Detailed Routing - Metal traces are iteratively laid across the routing guides to physically implement the routing guides.
+
++ To run routing in OpenLANE:
+  `run_routing`
+
+![268687446-c7dac1db-4bd8-4cf4-973a-8d8890a8fc40](https://github.com/apoorvaaaa5/pes_physicaldesign/assets/117642634/c4d154e7-0564-415e-a58f-bc643315b083)
 
 
++ If DRC errors persist after routing the user has two options:
+  - Re-run routing with higher QoR settings.
+  - Manually fix DRC errors specific in tritonRoute.drc file.
+  
+</details>
 
+<details>
+<summary> SPEF Extraction </summary>
 
++ After routing has been completed interconnect parasitics can be extracted to perform sign-off post-route STA analysis. The parasitics are extracted into a SPEF file.
++ The SPEF extractor is not included within OpenLANE as of now.
 
+</details>
